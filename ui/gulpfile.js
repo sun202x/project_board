@@ -10,7 +10,7 @@ gulp.task('build', () => {
     return rollup
         .rollup({
             input: './src/index.tsx',
-            external: ['react'],
+            // external: ['react', 'react-dom'],
             plugins: [
                 resolve.nodeResolve(),
                 commonjs(),
