@@ -1,11 +1,8 @@
 import React from 'react';
+import BoardWrite from './page/BoardWrite';
 
 function App() {
-  return (
-    <div>
-      Hello, gulp and typescript!!
-    </div>
-  );
+  return <BoardWrite />;
 }
 
 export default App;

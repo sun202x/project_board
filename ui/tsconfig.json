@@ -5,7 +5,8 @@
         "module": "ESNext",
         "target": "es5",
         "sourceMap": true,
-        "moduleResolution": "node"
+        "moduleResolution": "node",
         // "noImplicitAny": true
+        "allowSyntheticDefaultImports": true
     }
 }
