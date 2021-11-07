@@ -1,16 +1,17 @@
 import React from 'react';
-import { TextField } from "@material-ui/core";
+import { TextField } from '@material-ui/core';
 
 interface IInputProps {
-    id?: string;
+    id: string;
     label?: string;
+    value?: string;
     rows?: number;
     margin?: any;
     dataName?: string;
     multiline?: boolean;
     fullWidth?: boolean;
     onChange?: Function;
-};
+}
 
 export default function Input(props: IInputProps) {
     const handleChange = function (e: any) {
@@ -22,6 +23,7 @@ export default function Input(props: IInputProps) {
             id={props.id}
             rows={props.rows}
             label={props.label}
+            value={props.value}
             name={props.dataName}
             margin={props.margin}
             multiline={props.multiline}
