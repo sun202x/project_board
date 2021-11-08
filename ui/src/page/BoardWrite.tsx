@@ -80,16 +80,6 @@ export default class BoardWrite extends React.Component<
         const id = uuid();
 
         ls.setItem(id, JSON.stringify(values));
-
-        this.setState({
-            items: this.state.items.concat({ id: id, ...values }),
-            values: {
-                title: '',
-                content: '',
-            },
-        });
-
-        console.log(this.state);
     }.bind(this);
 
     handleReWrite = function (e: any) {
