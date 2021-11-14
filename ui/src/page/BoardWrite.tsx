@@ -5,24 +5,44 @@ import SaveIcon from '@material-ui/icons/Save';
 import Input from '../component/Input';
 import ButtonBase from '../component/button';
 import { Box, Container } from '@material-ui/core';
-import { v4 as uuid } from 'uuid';
 
 // =============================================== Board =============================================== //
-interface IBoardWriteFuncProps {}
+interface IBoardWriteProps {}
 
-interface IBoardWriteFuncState {}
+interface IContents {
+    titleField: any;
+    contentField: any;
+    baseField?: any;
+}
+interface IButton {
+    id: string;
+    label: string;
+    variant?: 'text' | 'outlined' | 'contained';
+    color?: any;
+    startIcon?: React.ReactNode;
+    margin?: string;
+}
+interface IBoardWriteState {
+    items: any[];
+    values: any;
+    contents: IContents;
+    footer: {
+        saveButton: IButton;
+        reWriteButton: IButton;
+    };
+    // aaa: (string | number)[];
+}
 
 const boxSize = {
     m: 1,
 };
 
-export default class BoardWrite extends React.Component<
-    IBoardWriteFuncProps,
-    IBoardWriteFuncState
-> {
+export default class BoardWrite extends React.Component<IBoardWriteProps, IBoardWriteState> {
     state = {
+        // aaa: ["1", "1", "2", 1111],
         items: [],
         values: {
+            boardNum: '0',
             title: '',
             content: '',
         },
@@ -59,10 +79,10 @@ export default class BoardWrite extends React.Component<
                 startIcon: <EditIcon />,
             },
         },
-    };
+    } as IBoardWriteState;
 
     // this binding을 위해 classField 형태로 작성한다.
-    handleChange = function (e: any) {
+    handleChange = (e: any) => {
         const { name, value } = e.target;
 
         this.setState({
@@ -71,25 +91,41 @@ export default class BoardWrite extends React.Component<
                 [name]: value,
             },
         });
-    }.bind(this);
+    };
 
-    handleSave = function (e: any) {
+    updateBoardNum = () => {
+        this.state.values.boardNum++;
+    };
+
+    handleSave = (e: any) => {
         debugger;
         const { values } = this.state;
         const ls = localStorage;
-        const id = uuid();
 
-        ls.setItem(id, JSON.stringify(values));
-    }.bind(this);
+        ls.setItem(values.boardNum, JSON.stringify(values));
 
-    handleReWrite = function (e: any) {
+        this.setState(
+            {
+                values: {
+                    boardNum: values.boardNum,
+                    title: '',
+                    content: '',
+                },
+            },
+            () => {
+                this.updateBoardNum();
+            },
+        );
+    };
+
+    handleReWrite = (e: any) => {
         this.setState({
             values: {
                 title: '',
                 content: '',
             },
         });
-    }.bind(this);
+    };
 
     render() {
         const { title, content } = this.state.values;
