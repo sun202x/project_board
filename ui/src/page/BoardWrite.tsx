@@ -12,6 +12,7 @@ interface IBoardWriteProps {}
 interface IContents {
     titleField: any;
     contentField: any;
+    writerField: any;
     baseField?: any;
 }
 interface IButton {
@@ -24,7 +25,12 @@ interface IButton {
 }
 interface IBoardWriteState {
     items: any[];
-    values: any;
+    values: {
+        boardNum?: number;
+        title: string;
+        content: string;
+        writer: string;
+    };
     contents: IContents;
     footer: {
         saveButton: IButton;
@@ -42,15 +48,23 @@ export default class BoardWrite extends React.Component<IBoardWriteProps, IBoard
         // aaa: ["1", "1", "2", 1111],
         items: [],
         values: {
-            boardNum: '0',
+            boardNum: 0,
             title: '',
             content: '',
+            writer: '',
         },
         contents: {
             titleField: {
                 id: 'boardTitle',
                 label: '제목',
                 dataName: 'title',
+                fullWidth: true,
+                margin: 'normal',
+            },
+            writerField: {
+                id: 'boardWriter',
+                label: '작성자',
+                dataName: 'writer',
                 fullWidth: true,
                 margin: 'normal',
             },
@@ -94,7 +108,12 @@ export default class BoardWrite extends React.Component<IBoardWriteProps, IBoard
     };
 
     updateBoardNum = () => {
-        this.state.values.boardNum++;
+        this.setState({
+            values: {
+                ...this.state.values,
+                boardNum: this.state.values.boardNum + 1,
+            },
+        });
     };
 
     handleSave = (e: any) => {
@@ -102,7 +121,7 @@ export default class BoardWrite extends React.Component<IBoardWriteProps, IBoard
         const { values } = this.state;
         const ls = localStorage;
 
-        ls.setItem(values.boardNum, JSON.stringify(values));
+        ls.setItem(String(values.boardNum), JSON.stringify(values));
 
         this.setState(
             {
@@ -110,6 +129,7 @@ export default class BoardWrite extends React.Component<IBoardWriteProps, IBoard
                     boardNum: values.boardNum,
                     title: '',
                     content: '',
+                    writer: '',
                 },
             },
             () => {
@@ -123,13 +143,14 @@ export default class BoardWrite extends React.Component<IBoardWriteProps, IBoard
             values: {
                 title: '',
                 content: '',
+                writer: '',
             },
         });
     };
 
     render() {
-        const { title, content } = this.state.values;
-        const { titleField, contentField } = this.state.contents;
+        const { title, content, writer } = this.state.values;
+        const { titleField, contentField, writerField } = this.state.contents;
         const { saveButton, reWriteButton } = this.state.footer;
 
         return (
@@ -143,6 +164,17 @@ export default class BoardWrite extends React.Component<IBoardWriteProps, IBoard
                             dataName={titleField.dataName}
                             fullWidth={titleField.fullWidth}
                             margin={titleField.margin}
+                            onChange={this.handleChange}
+                        />
+                    </div>
+                    <div>
+                        <Input
+                            id={writerField.id}
+                            value={writer}
+                            label={writerField.label}
+                            dataName={writerField.dataName}
+                            fullWidth={writerField.fullWidth}
+                            margin={writerField.margin}
                             onChange={this.handleChange}
                         />
                     </div>
