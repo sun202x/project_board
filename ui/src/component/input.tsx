@@ -15,7 +15,7 @@ interface IInputProps {
 
 export default function Input(props: IInputProps) {
     const handleChange = function (e: any) {
-        props.onChange(e);
+        props.onChange && props.onChange(e);
     };
 
     return (

@@ -16,7 +16,7 @@ const buttonStyle = {
 
 export default function ButtonBase(props: IButtonProps) {
     const handleClick = function (e: any) {
-        props.onClick(e);
+        props.onClick && props.onClick(e);
     };
 
     return (

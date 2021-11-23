@@ -1,13 +1,20 @@
 import * as React from 'react';
+
+// ui
+import Input from '../component/Input';
+import ButtonBase from '../component/button';
+import { Box, Container, Toolbar } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+
 // icon
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
-import Input from '../component/Input';
-import ButtonBase from '../component/button';
-import { Box, Container } from '@material-ui/core';
+import ListIcon from '@material-ui/icons/List';
 
 // =============================================== Board =============================================== //
-interface IBoardWriteProps {}
+interface IBoardWriteProps {
+    match: any;
+}
 
 interface IContents {
     titleField: any;
@@ -35,6 +42,7 @@ interface IBoardWriteState {
     footer: {
         saveButton: IButton;
         reWriteButton: IButton;
+        backToTheListButton: IButton;
     };
     // aaa: (string | number)[];
 }
@@ -43,57 +51,73 @@ const boxSize = {
     m: 1,
 };
 
+const btnBoxStyle = {
+    m: 1,
+    display: 'flex',
+};
+
 export default class BoardWrite extends React.Component<IBoardWriteProps, IBoardWriteState> {
-    state = {
-        // aaa: ["1", "1", "2", 1111],
-        items: [],
-        values: {
-            boardNum: 0,
-            title: '',
-            content: '',
-            writer: '',
-        },
-        contents: {
-            titleField: {
-                id: 'boardTitle',
-                label: '제목',
-                dataName: 'title',
-                fullWidth: true,
-                margin: 'normal',
+    constructor(props) {
+        super(props);
+        const boardNum = localStorage.length;
+
+        this.state = {
+            // aaa: ["1", "1", "2", 1111],
+            items: [],
+            values: {
+                boardNum,
+                title: '',
+                content: '',
+                writer: '',
             },
-            writerField: {
-                id: 'boardWriter',
-                label: '작성자',
-                dataName: 'writer',
-                fullWidth: true,
-                margin: 'normal',
+            contents: {
+                titleField: {
+                    id: 'boardTitle',
+                    label: '제목',
+                    dataName: 'title',
+                    fullWidth: true,
+                    margin: 'normal',
+                },
+                writerField: {
+                    id: 'boardWriter',
+                    label: '작성자',
+                    dataName: 'writer',
+                    fullWidth: true,
+                    margin: 'normal',
+                },
+                contentField: {
+                    id: 'boardContent',
+                    label: '내용',
+                    dataName: 'content',
+                    rows: 10,
+                    multiline: true,
+                    fullWidth: true,
+                    margin: 'normal',
+                },
             },
-            contentField: {
-                id: 'boardContent',
-                label: '내용',
-                dataName: 'content',
-                rows: 10,
-                multiline: true,
-                fullWidth: true,
-                margin: 'normal',
+            footer: {
+                saveButton: {
+                    id: 'save',
+                    label: '저장',
+                    variant: 'contained',
+                    color: 'primary',
+                    startIcon: <SaveIcon />,
+                },
+                reWriteButton: {
+                    id: 'reWrite',
+                    label: '다시작성',
+                    variant: 'contained',
+                    startIcon: <EditIcon />,
+                },
+                backToTheListButton: {
+                    id: 'back',
+                    label: '목록으로',
+                    variant: 'contained',
+                    startIcon: <ListIcon />,
+                },
             },
-        },
-        footer: {
-            saveButton: {
-                id: 'save',
-                label: '저장',
-                variant: 'contained',
-                color: 'primary',
-                startIcon: <SaveIcon />,
-            },
-            reWriteButton: {
-                id: 'reWrite',
-                label: '다시작성',
-                variant: 'contained',
-                startIcon: <EditIcon />,
-            },
-        },
-    } as IBoardWriteState;
+        };
+    }
 
     // this binding을 위해 classField 형태로 작성한다.
     handleChange = (e: any) => {
@@ -117,9 +141,11 @@ export default class BoardWrite extends React.Component<IBoardWriteProps, IBoard
     };
 
     handleSave = (e: any) => {
-        debugger;
         const { values } = this.state;
         const ls = localStorage;
+
+        // 제목, 내용, 작성자중 하나라도 없으면 저장하지 않는다
+        if (!values.title || !values.content || !values.writer) return;
 
         ls.setItem(String(values.boardNum), JSON.stringify(values));
 
@@ -151,7 +177,7 @@ export default class BoardWrite extends React.Component<IBoardWriteProps, IBoard
     render() {
         const { title, content, writer } = this.state.values;
         const { titleField, contentField, writerField } = this.state.contents;
-        const { saveButton, reWriteButton } = this.state.footer;
+        const { saveButton, reWriteButton, backToTheListButton } = this.state.footer;
 
         return (
             <Container>
@@ -192,7 +218,7 @@ export default class BoardWrite extends React.Component<IBoardWriteProps, IBoard
                         />
                     </div>
                 </Box>
-                <Box sx={boxSize}>
+                <Box sx={btnBoxStyle}>
                     <ButtonBase
                         id={saveButton.id}
                         label={saveButton.label}
@@ -208,8 +234,34 @@ export default class BoardWrite extends React.Component<IBoardWriteProps, IBoard
                         startIcon={reWriteButton.startIcon}
                         onClick={this.handleReWrite}
                     />
+                    <Link to="/list">
+                        <ButtonBase
+                            id={backToTheListButton.id}
+                            label={backToTheListButton.label}
+                            variant={backToTheListButton.variant}
+                            startIcon={backToTheListButton.startIcon}
+                        />
+                    </Link>
                 </Box>
             </Container>
         );
+    }
+
+    componentDidMount() {
+        console.log('componentDidMount');
+        const params = this.props.match.params;
+        const initData = JSON.parse(localStorage.getItem(params.boardNum));
+
+        if (initData) {
+            const { title, content, writer } = initData;
+
+            this.setState({
+                values: {
+                    title,
+                    content,
+                    writer,
+                },
+            });
+        }
     }
 }

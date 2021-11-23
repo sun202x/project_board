@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
+import ButtonBase from '../component/button';
+import CreateIcon from '@material-ui/icons/Create';
 import { Box, Container } from '@material-ui/core';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -14,30 +17,31 @@ interface IBoardListState {
     rows: any[];
 }
 
-const boxStyle = {
+const wrapperBoardList = {
     width: '100%',
-    height: 500,
+};
+
+const wrapperBtn = {
+    width: '100%',
+    margin: '10px 0',
+};
+
+const createRows = () => {
+    const ls = localStorage;
+    const rows = [];
+
+    for (let i = 0, len = ls.length; i < len; i++) {
+        const row = JSON.parse(ls.getItem(String(i)));
+        if (!row) continue;
+        rows.push(row);
+    }
+
+    return rows;
 };
 
 export default class BoardList extends React.Component<IBoardListProps, IBoardListState> {
-    constructor(props) {
-        super(props);
-        this.state = {
-            rows: this.createRows(),
-        };
-    }
-
-    createRows = () => {
-        const ls = localStorage;
-        const rows = [];
-
-        for (let i = 0, len = ls.length; i < len; i++) {
-            const row = JSON.parse(ls.getItem(String(i)));
-            if (!row) continue;
-            rows.push(row);
-        }
-
-        return rows;
+    state = {
+        rows: createRows(),
     };
 
     render() {
@@ -45,7 +49,7 @@ export default class BoardList extends React.Component<IBoardListProps, IBoardLi
 
         return (
             <Container>
-                <Box style={boxStyle}>
+                <Box style={wrapperBoardList}>
                     <TableContainer>
                         <Table sx={{ minWidth: 400 }} aria-label="list">
                             <TableHead>
@@ -61,7 +65,10 @@ export default class BoardList extends React.Component<IBoardListProps, IBoardLi
                                         <TableCell align="center" style={{ width: 30 }}>
                                             {idx}
                                         </TableCell>
-                                        <TableCell>{row.title}</TableCell>
+                                        <TableCell>
+                                            {/* path에 boardNum을 넣어주고 작성 페이지에서 해당 boardNum로 저장되어 있는 데이터를 보여준다 */}
+                                            <Link to={`/write/${row.boardNum}`}>{row.title}</Link>
+                                        </TableCell>
                                         <TableCell align="center" style={{ width: 100 }}>
                                             {row.writer}
                                         </TableCell>
@@ -70,6 +77,17 @@ export default class BoardList extends React.Component<IBoardListProps, IBoardLi
                             </TableBody>
                         </Table>
                     </TableContainer>
+                </Box>
+                <Box style={wrapperBtn}>
+                    <Link to="/write/new">
+                        <ButtonBase
+                            id="newBtn"
+                            label="새로작성"
+                            variant="contained"
+                            color="primary"
+                            startIcon={<CreateIcon />}
+                        />
+                    </Link>
                 </Box>
             </Container>
         );
