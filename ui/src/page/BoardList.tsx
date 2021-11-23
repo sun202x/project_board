@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import ButtonBase from '../component/button';
 import CreateIcon from '@material-ui/icons/Create';
+import DeleteIcon from '@material-ui/icons/Delete';
 import { Box, Container } from '@material-ui/core';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -81,13 +82,19 @@ export default class BoardList extends React.Component<IBoardListProps, IBoardLi
                 <Box style={wrapperBtn}>
                     <Link to="/write/new">
                         <ButtonBase
-                            id="newBtn"
+                            id="new"
                             label="새로작성"
                             variant="contained"
                             color="primary"
                             startIcon={<CreateIcon />}
                         />
                     </Link>
+                    <ButtonBase
+                        id="delete"
+                        label="삭제"
+                        variant="contained"
+                        startIcon={<DeleteIcon />}
+                    />
                 </Box>
             </Container>
         );

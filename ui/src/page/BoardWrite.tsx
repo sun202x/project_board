@@ -248,7 +248,6 @@ export default class BoardWrite extends React.Component<IBoardWriteProps, IBoard
     }
 
     componentDidMount() {
-        console.log('componentDidMount');
         const params = this.props.match.params;
         const initData = JSON.parse(localStorage.getItem(params.boardNum));
 
