@@ -2,6 +2,8 @@
 write페이지로 넘어갈 때 수정화면으로 들어가게 되면 localStorage에 있는 데이터를 가져와서 셋팅을 해줘야 하는데,
 현재는 componentDidMount에서 데이터를 가져온 후 setState를 하고있음
 > 맞는선택인지?
+> 생각을 해보니 componentDidMount는 비동기 통신에 용이한걸로 알고있는데 굳이 해당 메서드에서 할 필요가 없는거 같기도..?
+    - DOM이 붙은 후 가 아닌, 초기 state를 변경해주면 될 것 같은데 그럼 constructor에서 해주는게 맞는건가?
 
 - TODO
 1. 리스트 페이지에 체크박스 넣어서 삭제기능 추가
