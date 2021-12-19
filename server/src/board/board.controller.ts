@@ -1,11 +1,26 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param, Post, Req } from '@nestjs/common';
+import { Request } from 'express';
+import { BoardService } from './board.service';
 
 @Controller('board')
 export class BoardController {
 
-    @Get()
-    getBoard() {
-    return 'This is board Controller';
+    constructor(private boardService: BoardService) {}
+
+    @Get("getBoard")
+    // @Param()
+    getBoard(@Req() request: Request) {
+        return 'This is board Controller';
+    }
+
+    @Post()
+    saveBoard() {
+        
+    }
+
+    @Post()
+    updateBoard() {
+
     }
 
 }
