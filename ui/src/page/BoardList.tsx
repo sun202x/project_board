@@ -29,12 +29,16 @@ const wrapperBtn = {
 
 const createRows = () => {
     const ls = localStorage;
-    const rows = [];
+    const rows: any[] = [];
 
     for (let i = 0, len = ls.length; i < len; i++) {
-        const row = JSON.parse(ls.getItem(String(i)));
-        if (!row) continue;
-        rows.push(row);
+        const item = ls.getItem(String(i));
+
+        if (item) {
+            const row = JSON.parse(item);
+            if (!row) continue;
+            rows.push(row);
+        }
     }
 
     return rows;

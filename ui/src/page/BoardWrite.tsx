@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // ui
-import Input from '../component/Input';
+import Input from '../component/input';
 import ButtonBase from '../component/button';
 import { Box, Container, Toolbar } from '@material-ui/core';
 import { Link } from 'react-router-dom';
@@ -132,10 +132,15 @@ export default class BoardWrite extends React.Component<IBoardWriteProps, IBoard
     };
 
     updateBoardNum = () => {
+        const { values } = this.state;
+        const boardNum = values.boardNum !== undefined
+            ? values.boardNum
+            : 0;
+
         this.setState({
             values: {
-                ...this.state.values,
-                boardNum: this.state.values.boardNum + 1,
+                ...values,
+                boardNum: boardNum + 1
             },
         });
     };
@@ -249,10 +254,10 @@ export default class BoardWrite extends React.Component<IBoardWriteProps, IBoard
 
     componentDidMount() {
         const params = this.props.match.params;
-        const initData = JSON.parse(localStorage.getItem(params.boardNum));
+        const item = localStorage.getItem(params.boardNum);
 
-        if (initData) {
-            const { title, content, writer } = initData;
+        if (item) {
+            const { title, content, writer } = JSON.parse(item);
 
             this.setState({
                 values: {
