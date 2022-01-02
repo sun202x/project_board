@@ -15,7 +15,6 @@ import ListIcon from '@material-ui/icons/List';
 interface IBoardWriteProps {
     match: any;
 }
-
 interface IContents {
     titleField: any;
     contentField: any;
@@ -57,69 +56,73 @@ const btnBoxStyle = {
 };
 
 export default class BoardWrite extends React.Component<IBoardWriteProps, IBoardWriteState> {
-    constructor(props) {
-        super(props);
-        const boardNum = localStorage.length;
-
-        this.state = {
-            // aaa: ["1", "1", "2", 1111],
-            items: [],
-            values: {
-                boardNum,
-                title: '',
-                content: '',
-                writer: '',
+    state = {
+        // aaa: ["1", "1", "2", 1111],
+        items: [],
+        values: {
+            boardNum: localStorage.length,
+            title: '',
+            content: '',
+            writer: '',
+        },
+        contents: {
+            titleField: {
+                id: 'boardTitle',
+                label: '제목',
+                dataName: 'title',
+                fullWidth: true,
+                margin: 'normal',
             },
-            contents: {
-                titleField: {
-                    id: 'boardTitle',
-                    label: '제목',
-                    dataName: 'title',
-                    fullWidth: true,
-                    margin: 'normal',
-                },
-                writerField: {
-                    id: 'boardWriter',
-                    label: '작성자',
-                    dataName: 'writer',
-                    fullWidth: true,
-                    margin: 'normal',
-                },
-                contentField: {
-                    id: 'boardContent',
-                    label: '내용',
-                    dataName: 'content',
-                    rows: 10,
-                    multiline: true,
-                    fullWidth: true,
-                    margin: 'normal',
-                },
+            writerField: {
+                id: 'boardWriter',
+                label: '작성자',
+                dataName: 'writer',
+                fullWidth: true,
+                margin: 'normal',
             },
-            footer: {
-                saveButton: {
-                    id: 'save',
-                    label: '저장',
-                    variant: 'contained',
-                    color: 'primary',
-                    startIcon: <SaveIcon />,
-                },
-                reWriteButton: {
-                    id: 'reWrite',
-                    label: '다시작성',
-                    variant: 'contained',
-                    startIcon: <EditIcon />,
-                },
-                backToTheListButton: {
-                    id: 'back',
-                    label: '목록으로',
-                    variant: 'contained',
-                    startIcon: <ListIcon />,
-                },
+            contentField: {
+                id: 'boardContent',
+                label: '내용',
+                dataName: 'content',
+                rows: 10,
+                multiline: true,
+                fullWidth: true,
+                margin: 'normal',
             },
-        };
-    }
+        },
+        footer: {
+            saveButton: {
+                id: 'save',
+                label: '저장',
+                variant: 'contained',
+                color: 'primary',
+                startIcon: <SaveIcon />,
+            },
+            reWriteButton: {
+                id: 'reWrite',
+                label: '다시작성',
+                variant: 'contained',
+                startIcon: <EditIcon />,
+            },
+            backToTheListButton: {
+                id: 'back',
+                label: '목록으로',
+                variant: 'contained',
+                startIcon: <ListIcon />,
+            },
+        },
+    } as IBoardWriteState;
 
     // this binding을 위해 classField 형태로 작성한다.
+    updateBoardNum = () => {
+        this.setState({
+            values: {
+                ...this.state.values,
+                boardNum: this.state.values.boardNum + 1,
+            },
+        });
+    };
+
     handleChange = (e: any) => {
         const { name, value } = e.target;
 
@@ -127,15 +130,6 @@ export default class BoardWrite extends React.Component<IBoardWriteProps, IBoard
             values: {
                 ...this.state.values,
                 [name]: value,
-            },
-        });
-    };
-
-    updateBoardNum = () => {
-        this.setState({
-            values: {
-                ...this.state.values,
-                boardNum: this.state.values.boardNum + 1,
             },
         });
     };

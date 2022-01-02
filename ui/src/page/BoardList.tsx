@@ -10,12 +10,14 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Checkbox from '@mui/material/Checkbox';
 
 // =============================================== Board =============================================== //
 interface IBoardListProps {}
 
 interface IBoardListState {
-    rows: any[];
+    rows: any;
+    checkedItems: any;
 }
 
 const wrapperBoardList = {
@@ -43,7 +45,20 @@ const createRows = () => {
 export default class BoardList extends React.Component<IBoardListProps, IBoardListState> {
     state = {
         rows: createRows(),
+        checkedItems: [],
+    } as IBoardListState;
+
+    handleChange = (e: any) => {
+        const { id } = e.target;
+        const newRows = this.state.rows.map((row) => {
+            if (row.boardNum === Number(id)) {
+            }
+        });
+
+        console.log(this.state);
     };
+
+    setCheckedItems = (e: any) => {};
 
     render() {
         const { rows } = this.state;
@@ -55,26 +70,44 @@ export default class BoardList extends React.Component<IBoardListProps, IBoardLi
                         <Table sx={{ minWidth: 400 }} aria-label="list">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell align="center">번호</TableCell>
+                                    <TableCell align="center" style={{ width: 30 }}>
+                                        <Checkbox size="small" />
+                                    </TableCell>
+                                    <TableCell align="center" style={{ width: 30 }}>
+                                        번호
+                                    </TableCell>
                                     <TableCell align="center">제목</TableCell>
-                                    <TableCell align="center">작성자</TableCell>
+                                    <TableCell align="center" style={{ width: 100 }}>
+                                        작성자
+                                    </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rows.map((row, idx) => (
-                                    <TableRow key={row.id}>
-                                        <TableCell align="center" style={{ width: 30 }}>
-                                            {idx}
-                                        </TableCell>
-                                        <TableCell>
-                                            {/* path에 boardNum을 넣어주고 작성 페이지에서 해당 boardNum로 저장되어 있는 데이터를 보여준다 */}
-                                            <Link to={`/write/${row.boardNum}`}>{row.title}</Link>
-                                        </TableCell>
-                                        <TableCell align="center" style={{ width: 100 }}>
-                                            {row.writer}
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
+                                {rows &&
+                                    rows.length > 0 &&
+                                    rows.map((row, idx) => (
+                                        <TableRow key={row.id}>
+                                            <TableCell align="center" style={{ width: 30 }}>
+                                                <Checkbox
+                                                    id={row.boardNum}
+                                                    size="small"
+                                                    // onChange={this.handleChange}
+                                                />
+                                            </TableCell>
+                                            <TableCell align="center" style={{ width: 30 }}>
+                                                {idx}
+                                            </TableCell>
+                                            <TableCell>
+                                                {/* path에 boardNum을 넣어주고 작성 페이지에서 해당 boardNum로 저장되어 있는 데이터를 보여준다 */}
+                                                <Link to={`/write/${row.boardNum}`}>
+                                                    {row.title}
+                                                </Link>
+                                            </TableCell>
+                                            <TableCell align="center" style={{ width: 100 }}>
+                                                {row.writer}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
                             </TableBody>
                         </Table>
                     </TableContainer>
