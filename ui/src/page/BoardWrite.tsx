@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 // ui
-import Input from '../component/Input';
+import Input from '../component/input';
 import ButtonBase from '../component/button';
 import { Box, Container, Toolbar } from '@material-ui/core';
 import { Link } from 'react-router-dom';
