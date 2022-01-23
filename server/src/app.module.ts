@@ -7,7 +7,7 @@ import { BoardModule } from './board/board.module';
 @Module({
   imports: [
     BoardModule,
-    MongooseModule.forRoot('mongodb://localhost/nest')
+    MongooseModule.forRoot('mongodb+srv://user:1q2w3e4r@projectboard.3luwu.mongodb.net/ProjectBoard?retryWrites=true&w=majority')
   ],
   controllers: [AppController],
   providers: [AppService],

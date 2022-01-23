@@ -10,8 +10,8 @@ export class BoardService {
     constructor(@InjectModel(Board.name) private boardModel: Model<BoardDocument>) { }
 
     async create(createBoardDto: CreateBoardDto): Promise<Board> {
-        const createdCat = new this.boardModel(createBoardDto);
-        return createdCat.save();
+        const createdBoard = new this.boardModel(createBoardDto);
+        return createdBoard.save();
     }
 
     async findAll(): Promise<Board[]> {

@@ -13,9 +13,14 @@ export class BoardController {
         return 'This is board Controller';
     }
 
-    @Post()
+    @Post("saveBoard")
     saveBoard() {
-        
+        this.boardService.create({
+            id: "id",
+            title: "test",
+            contents: "Hello, This is test contents",
+            writer: "user"
+        });
     }
 
     @Post()
